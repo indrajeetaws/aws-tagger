@@ -117,7 +117,7 @@ class MultipleResourceTagger(object):
             self.tagger.tag(resource_id, tags)
 
 class CSVResourceTagger(object):
-    def __init__(self, dryrun, verbose, role=None, region=None, tag_volumes=False):
+    def __init__(self, columevalue, dryrun, verbose, role=None, region=None, tag_volumes=False):
         self.dryrun = dryrun
         self.verbose = verbose
         self.tag_volumes = tag_volumes
@@ -126,8 +126,8 @@ class CSVResourceTagger(object):
         self.regional_tagger = {}
         self.resource_id_column = 'Id'
         self.region_column = 'Region'
-        self.Cost = 'Channedl'
-
+        self.Cost = columevalue
+        print("Tag method for row if tag_index %s" % columevalue )
     def tag(self, filename):
         with open(filename, 'rU') as csv_file:
             reader = csv.reader(csv_file)
