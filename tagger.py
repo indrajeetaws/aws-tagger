@@ -126,6 +126,7 @@ class CSVResourceTagger(object):
         self.regional_tagger = {}
         self.resource_id_column = 'Id'
         self.region_column = 'Region'
+        self.Cost = 'Channedl'
 
     def tag(self, filename):
         with open(filename, 'rU') as csv_file:
@@ -137,13 +138,16 @@ class CSVResourceTagger(object):
                 if header_row:
                     header_row = False
                     tag_index = self._parse_header(row)
+                    print("Tag method for row if tag_index %s" % tag_index )
                 else:
                     self._tag_resource(tag_index, row)
+                    print("Tag method for row else %s tag_index %s" %(tag_index, row))
 
     def _parse_header(self, header_row):
         tag_index = {}
         for index, name in enumerate(header_row):
             tag_index[name] = index
+            print("parse header method forindex %s" % index )
 
         return tag_index
 
@@ -152,11 +156,14 @@ class CSVResourceTagger(object):
         tags = {}
         for (key, index) in tag_index.items():
             value = row[index]
-            if key != self.resource_id_column and key != self.region_column and value != "":
+#            if key != self.resource_id_column and key != self.region_column and value != "":
+            if key == self.Cost:
                 tags[key] = value
+                print("Tag resource method for key %s if key %s" %(key, value))
 
         tagger = self._lookup_tagger(tag_index, row)
         tagger.tag(resource_id, tags)
+        print("parse header method forindex %s" % tagger )
 
     def _lookup_tagger(self, tag_index, row):
         region = self.region
@@ -171,7 +178,7 @@ class CSVResourceTagger(object):
         if tagger is None:
             tagger = SingleResourceTagger(self.dryrun, self.verbose, role=self.role, region=region, tag_volumes=self.tag_volumes)
             self.regional_tagger[region] = tagger
-
+        print("parse header method forindex %s" % tagger )
         return tagger
 
 class EC2Tagger(object):
