@@ -17,8 +17,6 @@ columnindex = int()
 resourceIDindex = 0
 serviceindex = int()
 
-data = []
-
 with open(csvfile, 'rU') as csv_file:
             reader = csv.reader(csv_file)
             header_row = True
@@ -38,7 +36,3 @@ with open(csvfile, 'rU') as csv_file:
 
                 else:
                       print((row[resourceIDindex],row[serviceindex],row[columnindex]) )
-
-#                    data.append((row[resourceIDindex],row[serviceindex],row[columnindex]))
-#            for item in data:
-#                print(item)
