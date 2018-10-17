@@ -13,10 +13,9 @@ csvfile = args.csvfile
 
 resourceID = 'resource_id'
 service = 'service'
-columnindex = 0
-
+columnindex = int()
 resourceIDindex = 0
-serviceindex = 0
+serviceindex = int()
 
 data = []
 
@@ -27,7 +26,6 @@ with open(csvfile, 'rU') as csv_file:
                 if header_row:
                     header_row = False
                     for k,v in enumerate(row):
-                     print("row %s" % row )
                      if v == resourceID:
                       resourceIDindex = k
                       print("resourceIDindex %s" % k )  
@@ -39,6 +37,8 @@ with open(csvfile, 'rU') as csv_file:
                       print("columnindex %s" % k )
 
                 else:
-                    data.append((row[resourceIDindex],row[serviceindex],row[columnindex]))
-            for item in data:
-                print(item)
+                      print((row[resourceIDindex],row[serviceindex],row[columnindex]) )
+
+#                    data.append((row[resourceIDindex],row[serviceindex],row[columnindex]))
+#            for item in data:
+#                print(item)
