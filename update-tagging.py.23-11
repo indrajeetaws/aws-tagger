@@ -62,9 +62,9 @@ with open("sample_september.csv") as csv_file:
             print("service:", service_names[row[column_index['service']]], "resource_id:",row[column_index['resource_id']], "tag_channel:",row[column_index['tag_channel']])
        #
         ## Boto3 method for tagging EC2 Instance ##    
-            if row[column_index['tag_channel']].lower() == 'none' or row[column_index['tag_channel']].lower() == 'unknown':
-                  print("Not have any value")
-                  continue
+        ##    if row[column_index['tag_channel']].lower() == 'none' or row[column_index['tag_channel']].lower() == 'unknown':
+        ##          print("Not have any value")
+        ##          continue
             if service_names[row[column_index['service']]] == 'ec2':
                 print("It is EC2")
                 responsetag = client_ec2.describe_tags(
@@ -84,8 +84,7 @@ with open("sample_september.csv") as csv_file:
                        print('tttttttttttttttttt')
                        continue 
                 print('create')
-                try:
-                  response = client_ec2.create_tags(
+                response = client_ec2.create_tags(
                     DryRun = False,
                     Resources = [
                         row[column_index['resource_id']],
@@ -97,16 +96,12 @@ with open("sample_september.csv") as csv_file:
                        }
                      ]
                    ),
-                except Exception as e:
-                   print("Unable to create/update tag:",e)
-                   continue
-#       
+       
         ## Boto3 method for tagging S3 Bucket ##      
-            print("service:", service_names[row[column_index['service']]], "resource_id:",row[column_index['resource_id']], "tag_channel:",row[column_index['tag_channel']])
+            #print("service:", service_names[row[column_index['service']]], "resource_id:",row[column_index['resource_id']], "tag_channel:",row[column_index['tag_channel']])
             if service_names[row[column_index['service']]] == 's3':
                 print("It is S3")
-                try:
-                  response = client_s3.put_bucket_tagging(
+                response = client_s3.put_bucket_tagging(
                     Bucket = row[column_index['resource_id']],
                     Tagging={
                         'TagSet':[
@@ -117,10 +112,7 @@ with open("sample_september.csv") as csv_file:
                           ]
                        }
                     ),
-                except Exception as e:
-                   print("Unable to create/update tag:",e)
-                   continue
-     
+       
         ## Boto3 method for tagging Lambda ##      
             if service_names[row[column_index['service']]] == 'lambda':
                 print("It is Lambda")
