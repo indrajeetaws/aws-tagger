@@ -3,7 +3,7 @@ import boto3
 
 ## Change the TagKeyName accordingly ##
 TagKeyName = 'Channel'
-TagValue = True
+TagValue = False
 ## Change the input parameters accordingly ##
 column_headers = ["tag_channel", "resource_id", "service"]
 column_index = {"tag_channel": None, "resource_id": None, "service": None}
@@ -124,12 +124,30 @@ with open("sample_september.csv") as csv_file:
         ## Boto3 method for tagging Lambda ##      
             if service_names[row[column_index['service']]] == 'lambda':
                 print("It is Lambda")
-                response = client_lambda.tag_resource(
+                try:
+                   responsetagLambda = client_lambda.list_tags(
+                         Resource=row[column_index['resource_id']]
+                          )
+                except Exception as e:
+                   print("Unable to create/update tag:",e)
+                   continue
+                print(responsetagLambda)
+                keys = [tag.upper() for tag in responsetagLambda['Tags']]
+                if  TagKeyName.upper() in keys:
+                    if TagValue == False:
+                       print('Lambda already tag ')
+                       continue
+                print('create')
+                try:
+                  response = client_lambda.tag_resource(
                     Resource = row[column_index['resource_id']],
                     Tags={
                            TagKeyName : row[column_index['tag_channel']]
                        }
                    ),
+                except Exception as e:
+                   print("Unable to create/update tag:",e)
+                   continue
        
         ## Boto3 method for tagging CloudWatch log Groups ##      
 	        if service_names[row[column_index['service']]] == 'logs':
